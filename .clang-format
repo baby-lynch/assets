@@ -1,0 +1,19 @@
+# Author: Gao Lei
+
+---
+Language: Cpp
+# Google’s C++ style guide
+BasedOnStyle: Google
+# basic 
+IndentWidth: 4  
+ColumnLimit: 0  
+# macro
+AlignConsecutiveMacros: Consecutive
+# pointer
+DerivePointerAlignment: false
+PointerAlignment: Right
+# misc
+AllowShortFunctionsOnASingleLine: InlineOnly
+---
+Language: JavaScript
+ColumnLimit: 100
