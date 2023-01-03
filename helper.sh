@@ -7,9 +7,10 @@ function createTodayLogs() {
     today=$(date +%y%m%d)
 
     # 记录code文件夹下大小
-    du -m | sort -nr >./logs/filesize/${today}.log
+    du -m | sort -nr >/home/gao/code/logs/filesize/${today}.log
     # go文件夹以外 最大的20个文件
-    grep -v "go" ./logs/filesize/${today}.log | head -n 21 >./logs/filesize/top20.txt
+    grep -v "go" \ 
+    /home/gao/code/logs/filesize/${today}.log | head -n 21 >/home/gao/code/logs/filesize/top20.txt
 
 }
 # 将一些可以清理的文件清除掉
@@ -25,7 +26,7 @@ function freespace() {
 
 # 设置Git代理
 function setGitProxy() {
-    ip=10.210.128.1
+    ip=192.168.44.103
     port=7890
     http_proxy=${ip}:${port}
     https_proxy=${ip}:${port}
