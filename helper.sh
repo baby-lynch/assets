@@ -26,7 +26,7 @@ function freespace() {
 
 # 设置Git代理
 function setGitProxy() {
-    ip=192.168.44.103
+    ip=192.168.2.14
     port=7890
     http_proxy=${ip}:${port}
     https_proxy=${ip}:${port}
