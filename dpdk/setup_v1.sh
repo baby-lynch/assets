@@ -1,20 +1,17 @@
-#!/bin/bash
-
-#################################################
-#   Runtime Environment Configuration For DPDK  #
-#################################################
+#################################################################
+#   Runtime Environment Configuration For DPDK(build by gcc)  #
+#################################################################
 
 #--------------------- USER PARAMETERS ---------------------#
 # DPDK source directory
-RTE_SDK=/usr/local/src/dpdk-stable-21.11.2
+RTE_SDK=/home/gao/code/CDN/CDN-beta/f-stack-v.1.21.2/dpdk
 # NIC devices that you want dpdk to take over
-devices=(ens160)
+devices=(em2)
 # Number of hugepages you want to allocate for dpdk
-pages=256
+pages=1024
 # Mapping: device_name -> pci_address
 declare -A dev2pci=(
-    [ens160]=03:00.0
-    [ens192]=0b:00.0
+    [em2]=01:00.1
 )
 
 #--------------------- UTILITY FUNCTIONS ---------------------#
@@ -29,7 +26,7 @@ remove_igb_uio_module() {
 
 # Loads new igb_uio.ko (and uio module if needed).
 load_igb_uio_module() {
-    if [ ! -f $RTE_SDK/build/kernel/linux/igb_uio/igb_uio.ko ]; then
+    if [ ! -f $RTE_SDK/x86_64-native-linuxapp-gcc/kmod/igb_uio.ko ]; then
         echo "## ERROR: Target does not have the DPDK UIO Kernel Module."
         echo "       To fix, please try to rebuild target."
         return
@@ -50,7 +47,7 @@ load_igb_uio_module() {
     # be loaded.
 
     echo "Loading DPDK UIO module"
-    sudo /sbin/insmod $RTE_SDK/build/kernel/linux/igb_uio/igb_uio.ko
+    sudo /sbin/insmod $RTE_SDK/x86_64-native-linuxapp-gcc/kmod/igb_uio.ko
     if [ $? -ne 0 ]; then
         echo "## ERROR: Could not load kmod/igb_uio.ko."
         quit
@@ -69,7 +66,7 @@ remove_kni_module() {
 # Loads the rte_kni.ko module.
 load_kni_module() {
     # Check that the KNI module is already built.
-    if [ ! -f $RTE_SDK/build/kernel/linux/kni/rte_kni.ko ]; then
+    if [ ! -f $RTE_SDK/x86_64-native-linuxapp-gcc/kmod/rte_kni.ko ]; then
         echo "## ERROR: Target does not have the DPDK KNI Module."
         echo "       To fix, please try to rebuild target."
         return
@@ -80,7 +77,7 @@ load_kni_module() {
 
     # Now try load the KNI module.
     echo "Loading DPDK KNI module"
-    sudo /sbin/insmod $RTE_SDK/build/kernel/linux/kni/rte_kni.ko carrier=on
+    sudo /sbin/insmod $RTE_SDK/x86_64-native-linuxapp-gcc/kmod/rte_kni.ko carrier=on
     if [ $? -ne 0 ]; then
         echo "## ERROR: Could not load kmod/rte_kni.ko."
         quit
